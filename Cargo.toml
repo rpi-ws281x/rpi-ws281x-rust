@@ -1,9 +1,10 @@
 [package]
 name = "rs_ws281x"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Joseph Murphy <air.jmurph@gmail.com>"]
 license = "MIT"
 description = "Wrapper for ws281x library using bindgen to track upstream"
+links = "libws2811"
 
 [build]
 target = "armv7-unknown-linux-gnueabihf"
