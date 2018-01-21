@@ -1,0 +1,10 @@
+[package]
+name = "rs_ws281x"
+version = "0.1.0"
+authors = ["Joseph Murphy <air.jmurph@gmail.com>"]
+
+[dependencies]
+
+[build-dependencies]
+bindgen = "0.26"
+gcc = "0.3"
