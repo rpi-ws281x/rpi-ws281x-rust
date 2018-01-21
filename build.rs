@@ -3,8 +3,19 @@ extern crate gcc;
 
 use std::env;
 use std::path::{PathBuf};
+use std::process::Command;
 
 fn main() {
+
+    let _output = Command::new("git")
+		.arg("submodule")
+        .arg("update")
+        .arg("--init")
+        .arg("--recursive")
+        .arg("--remote")
+		.output()
+		.expect("Failed to execute hostname command.");
+
     gcc::Build::new()
         .file("./src/rpi_ws281x/mailbox.c")
         .file("./src/rpi_ws281x/ws2811.c")
