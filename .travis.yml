@@ -1,0 +1,7 @@
+language: rust
+
+env:
+  - ARCH=arm
+
+script:
+  - "bash -ex .travis-ci.sh"
