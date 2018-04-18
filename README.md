@@ -12,5 +12,5 @@ a while back.
 ## Contributing
 Code is licensed under the MIT license, so as long as you are cool with
 that, feel free to open an issue, talk about proposed changes, then open
-a PR!  I would love a hleping hand, just have to make sure things don't
+a PR!  I would love a helping hand, just have to make sure things don't
 get too messy either.
