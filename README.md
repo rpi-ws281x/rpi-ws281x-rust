@@ -3,7 +3,7 @@ This project is going through major overhauls, so expect breaking
 changes on most version changes.
 
 ## Usage
-Currently in major flux, mroe details when I finish the "Stage 1" overhaul.
+Currently in major flux, more details when I finish the "Stage 1" overhaul.
 The current version on crates.io is pretty close to a bare bindgen wrap of
 the C library.  The next version will look a lot more like typical Rust,
 inspired by the efforts of @Meh who wrote manual bindings to this libray
