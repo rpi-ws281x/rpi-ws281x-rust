@@ -34,7 +34,6 @@ where
 
     fn index(&self, index: I) -> &Self::Output {
         Index::index(self.raw_leds, index)
-        unimplemented!()
     }
 }
 
