@@ -1,34 +1,42 @@
-use std::{mem,ptr};
-use channel::Channel;
+use std::{mem, ptr};
 
-pub struct Builder(Controller);
+use libc::{c_int};
 
-impl Builder {
-    fn new() -> Self {
+use super::super::bindings::{ws2811_t, ws2811_init, ws2811_return_t};
+use super::super::channel::{Channel, ChannelBuilder};
+
+pub struct ControllerBuilder(ws2811_t);
+
+impl ControllerBuilder {
+    pub fn new() -> Self {
         unsafe {
-            let mut controller: Controller = mem::zeroed();
-            controller.c_struct.freq = 800000;
-            return Builder(controller);
+            return ControllerBuilder(mem::zeroed());
         }
     }
-    fn freq(&mut self, frequency: u32 ) -> Self {
-        self.0.c_struct.freq = frequency;
-        return self;
+    pub fn freq(&mut self, value: u32) -> &mut Self {
+        self.0.freq = value;
+        self
     }
-    fn dma(&mut self, dmanum: i32 ) -> Self {
-        self.0.c_struct.dmanum = dmanum;
-        return self;
+    pub fn channel(&mut self, index: usize, channel: ChannelBuilder) -> &mut Self {
+        self.0.channel[index] = channel.0;
+        self
     }
-    fn channel(&mut self, channel: Channel, idx: u8) -> Self {
+    pub fn dma(&mut self, value: i32) -> &mut Self {
+        self.0.dmanum = value as c_int;
+        self
+    }
+    pub fn render_wait_time(&mut self, value: u64) -> &mut Self {
+        self.0.render_wait_time = value;
+        self
+    }
+    pub fn build(&mut self) -> Result<Controller, ()> {
         unsafe {
-            self.0.c_struct.channel[idx] = channel.c_struct
-        }
-        self.0.c_struct.channel[idx] = channel;
-        return self;
-    }
-    fn build(&mut self) -> Result<Controller, ()> {
-        unsafe {
-            return Ok(ptr::read(&self.0));
+            let ret = ws2811_init(&mut self.0);
+            if ret != ws2811_return_t::WS2811_SUCCESS {
+                Err(());
+            } else {
+                return Controller::new(self.0, self.0.device, self.0.rpi_hw);
+            }
         }
     }
 }

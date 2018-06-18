@@ -13,6 +13,7 @@ target = "armv7-unknown-linux-gnueabihf"
 [build-dependencies]
 bindgen = "0.26"
 gcc = "0.3"
+palette = "0.4"
 
 [profile.release]
 opt-level = 3
