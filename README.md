@@ -2,6 +2,10 @@
 This project is going through major overhauls, so expect breaking
 changes on most version changes.
 
+## API Design - Help Wanted
+Please take a look at the `feature-new-api` branch and issue #1 and give
+some feedback!
+
 ## Usage
 Currently in major flux, more details when I finish the "Stage 1" overhaul.
 The current version on crates.io is pretty close to a bare bindgen wrap of
