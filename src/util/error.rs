@@ -2,7 +2,6 @@ use std::{error, fmt, result};
 
 #[derive(Clone, Debug)]
 pub enum WS2811Error {
-    Ok,
     Generic,
     OutOfMemory,
     HwNotSupported,
@@ -22,7 +21,6 @@ pub enum WS2811Error {
 impl fmt::Display for WS2811Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let message = match *self {
-            WS2811Error::Ok => "Ok",
             WS2811Error::Generic => "Generic error",
             WS2811Error::OutOfMemory => "Out of memory",
             WS2811Error::HwNotSupported => "Hardware not supported",
@@ -50,26 +48,27 @@ impl error::Error for WS2811Error {
     }
 }
 
-impl From<ws2811_return_t> for WS2811Error {
-    fn from(val: ws2811_return_t) -> WS2811Error {
+pub type Result<T> = result::Result<T, WS2811Error>;
+
+impl From<ws2811_return_t> for Result<()> {
+    fn from(val: ws2811_return_t) -> Result<()> {
         match val {
-            ws2811_return_t::WS2811_SUCCESS => WS2811Error::Ok,
-            ws2811_return_t::WS2811_ERROR_GENERIC => WS2811Error::Generic,
-            ws2811_return_t::WS2811_ERROR_OUT_OF_MEMORY => WS2811Error::OutOfMemory,
-            ws2811_return_t::WS2811_ERROR_HW_NOT_SUPPORTED => WS2811Error::HwNotSupported,
-            ws2811_return_t::WS2811_ERROR_MEM_LOCK => WS2811Error::MemLock,
-            ws2811_return_t::WS2811_ERROR_MMAP => WS2811Error::Mmap,
-            ws2811_return_t::WS2811_ERROR_MAP_REGISTERS => WS2811Error::MapRegisters,
-            ws2811_return_t::WS2811_ERROR_GPIO_INIT => WS2811Error::GpioInit,
-            ws2811_return_t::WS2811_ERROR_PWM_SETUP => WS2811Error::PwmSetup,
-            ws2811_return_t::WS2811_ERROR_MAILBOX_DEVICE => WS2811Error::MailboxDevice,
-            ws2811_return_t::WS2811_ERROR_DMA => WS2811Error::Dma,
-            ws2811_return_t::WS2811_ERROR_ILLEGAL_GPIO => WS2811Error::IllegalGpio,
-            ws2811_return_t::WS2811_ERROR_PCM_SETUP => WS2811Error::PcmSetup,
-            ws2811_return_t::WS2811_ERROR_SPI_SETUP => WS2811Error::SpiSetup,
-            ws2811_return_t::WS2811_ERROR_SPI_TRANSFER => WS2811Error::SpiTransfer,
+            ws2811_return_t::WS2811_SUCCESS => Ok(()),
+            ws2811_return_t::WS2811_ERROR_GENERIC => Err(WS2811Error::Generic),
+            ws2811_return_t::WS2811_ERROR_OUT_OF_MEMORY => Err(WS2811Error::OutOfMemory),
+            ws2811_return_t::WS2811_ERROR_HW_NOT_SUPPORTED => Err(WS2811Error::HwNotSupported),
+            ws2811_return_t::WS2811_ERROR_MEM_LOCK => Err(WS2811Error::MemLock),
+            ws2811_return_t::WS2811_ERROR_MMAP => Err(WS2811Error::Mmap),
+            ws2811_return_t::WS2811_ERROR_MAP_REGISTERS => Err(WS2811Error::MapRegisters),
+            ws2811_return_t::WS2811_ERROR_GPIO_INIT => Err(WS2811Error::GpioInit),
+            ws2811_return_t::WS2811_ERROR_PWM_SETUP => Err(WS2811Error::PwmSetup),
+            ws2811_return_t::WS2811_ERROR_MAILBOX_DEVICE => Err(WS2811Error::MailboxDevice),
+            ws2811_return_t::WS2811_ERROR_DMA => Err(WS2811Error::Dma),
+            ws2811_return_t::WS2811_ERROR_ILLEGAL_GPIO => Err(WS2811Error::IllegalGpio),
+            ws2811_return_t::WS2811_ERROR_PCM_SETUP => Err(WS2811Error::PcmSetup),
+            ws2811_return_t::WS2811_ERROR_SPI_SETUP => Err(WS2811Error::SpiSetup),
+            ws2811_return_t::WS2811_ERROR_SPI_TRANSFER => Err(WS2811Error::SpiTransfer),
         }
     }
 }
 
-pub type Result<T> = result::Result<T, WS2811Error>;

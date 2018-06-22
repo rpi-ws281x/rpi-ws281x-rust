@@ -1,4 +1,5 @@
 use super::super::bindings::{ws2811_t, ws2811_device, rpi_hw_t};
+use super::super::util::Result;
 
 #[derive(Debug)]
 pub struct Controller {
@@ -17,6 +18,13 @@ impl Controller {
         Controller {
             c_struct,
             channels,
+        }
+    }
+}
+impl Drop for Controller {
+    fn drop(&mut self) {
+        unsafe {
+            ws2811_fini(self.c_struct).into();
         }
     }
 }

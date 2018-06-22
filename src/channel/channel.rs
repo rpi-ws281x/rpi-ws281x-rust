@@ -48,11 +48,7 @@ impl Channel {
     /// be batched.
     pub fn render(&mut self) -> Result<()> {
         unsafe {
-            let ret: WS2811Error = ws2811_render(self.c_struct).into();
-            return match ret {
-                WS2811Error::Ok => Ok(()),
-                x => Err(x),
-            }
+            return ws2811_render(self.c_struct).into();
         }
     }
 }
