@@ -4,6 +4,7 @@ use libc::{c_int};
 
 use super::super::bindings::{ws2811_t, ws2811_init, ws2811_return_t};
 use super::super::channel::{Channel, ChannelBuilder};
+use super::super::util::{Result};
 
 pub struct ControllerBuilder(ws2811_t);
 
@@ -29,14 +30,10 @@ impl ControllerBuilder {
         self.0.render_wait_time = value;
         self
     }
-    pub fn build(&mut self) -> Result<Controller, ()> {
+    pub fn build(&mut self) -> Result<Controller> {
         unsafe {
-            let ret = ws2811_init(&mut self.0);
-            if ret != ws2811_return_t::WS2811_SUCCESS {
-                Err(());
-            } else {
-                return Controller::new(self.0, self.0.device, self.0.rpi_hw);
-            }
+            ws2811_init(&mut self.0).into::<Result<()>>()?;
+            return Ok(Controller::new(self.0));
         }
     }
 }
