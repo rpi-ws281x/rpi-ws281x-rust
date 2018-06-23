@@ -30,7 +30,7 @@ impl Controller {
     /// Gets a slice view to the color array to be written to the LEDs.
     /// See `leds_mut` for a mutable slice view to this data.
     ///
-    /// ## Safety
+    /// # Safety
     /// This function is moderately unsafe because we rely on the promise
     /// from the C library that it will stick to its memory layout and that
     /// the pointer is valid.
@@ -52,7 +52,7 @@ impl Controller {
     /// Gets a mutable slice pointing to the color array to be written to
     /// the LEDs.
     ///
-    /// ## Safety
+    /// # Safety
     /// This function is moderately unsafe because we rely on the promise
     /// from the C library that it will stick to its memory layout and that
     /// the pointer is valid.
