@@ -10,9 +10,9 @@ pub struct Controller {
 
 impl Controller {
     /// Creates a new Controller
-    /// Note: This is only to be called from the Builder struct, because some unsafe
-    /// things have to be done, and thus it is appropriately marked unsafe.
-    pub unsafe fn new(c_struct: ws2811_t) -> Self {
+    ///
+    /// Note: This is only to be called from the Builder struct
+    pub fn new(c_struct: ws2811_t) -> Self {
         Controller { c_struct }
     }
 
