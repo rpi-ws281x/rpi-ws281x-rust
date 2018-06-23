@@ -3,7 +3,7 @@ use std::slice::{from_raw_parts, from_raw_parts_mut};
 use super::super::bindings::{ws2811_fini, ws2811_render, ws2811_t};
 use super::super::util::{Result, RawColor};
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 pub struct Controller {
     c_struct: ws2811_t,
 }
@@ -71,8 +71,14 @@ impl Controller {
         }
     }
 }
+
 impl Drop for Controller {
     fn drop(&mut self) {
+        /*
+         * Unsafe used here because we need to call an externed
+         * function during the drop process.  Unfortunately,
+         * I don't have a better way of dealing with this.
+         */
         unsafe {
             ws2811_fini(&mut self.c_struct);
         }
