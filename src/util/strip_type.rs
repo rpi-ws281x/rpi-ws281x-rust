@@ -15,12 +15,13 @@ use super::super::bindings::{
     WS2812_STRIP,
     SK6812_STRIP,
     SK6812W_STRIP,
-}
+};
 
 #[derive(Debug)]
 pub enum StripType {
     SK6812_RGBW,
     SK6812_RBGW,
+    SK6812_GBRW,
     SK6812_GRBW,
     SK6812_BRGW,
     SK6812_BGRW,
@@ -40,6 +41,7 @@ impl Into<c_int> for StripType {
         match val {
             StripType::SK6812_RGBW => SK6812_STRIP_RGBW,
             StripType::SK6812_RBGW => SK6812_STRIP_RBGW,
+            StripType::SK6812_GBRW => SK6812_STRIP_GBRW,
             StripType::SK6812_GRBW => SK6812_STRIP_GRBW,
             StripType::SK6812_BRGW => SK6812_STRIP_BRGW,
             StripType::SK6812_BGRW => SK6812_STRIP_BGRW,
@@ -49,9 +51,9 @@ impl Into<c_int> for StripType {
             StripType::WS2811_GBR => WS2811_STRIP_GBR,
             StripType::WS2811_BRG => WS2811_STRIP_BRG,
             StripType::WS2811_BGR => WS2811_STRIP_BGR,
-            StripType::WS2812 => WS2812,
-            StripType::SK6812 => SK6812,
-            StripType::SK6812W => SK6812W,
+            StripType::WS2812 => WS2812_STRIP,
+            StripType::SK6812 => SK6812_STRIP,
+            StripType::SK6812W => SK6812W_STRIP,
         }
     }
 }
