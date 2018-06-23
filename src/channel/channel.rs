@@ -1,18 +1,16 @@
-use std::slice::{from_raw_parts_mut}
+use std::slice::{from_raw_parts, from_raw_parts_mut};
 
-use palette::{LinSrgba, Rgba, Srgb, Linear};
+use super::super::util::{RawColor};
+use super::super::bindings::{ws2811_channel_t};
 
-use super::super::util::{RawColor, Result, WS2811Error};
-use super::super::bindings::{ws2811_channel_t, ws2811_render};
-
-#[derive(Deubg)]
-pub struct Channel {
-    c_struct: ws2811_channel_t,
+#[derive(Debug)]
+pub struct Channel<'a> {
+    c_struct: &'a mut ws2811_channel_t,
 }
 
-impl Channel {
+impl<'a> Channel<'a> {
     /// Build a channel from the C struct.
-    pub fn new(c_struct: ws2811_channel_t) -> Channel {
+    pub fn new(c_struct: &'a mut ws2811_channel_t) -> Channel<'a> {
         Channel {
             c_struct,
         }
@@ -25,9 +23,9 @@ impl Channel {
     /// This function is moderately unsafe, it assumes that
     /// the C library holds to its memory layout, which isn't
     /// a total given.
-    pub fn leds() -> &[RawColor] {
+    pub fn leds(&self) -> &[RawColor] {
         unsafe {
-            return from_raw_parts(c_struct.leds as *RawColor, c_struct.count as usize);
+            return from_raw_parts(self.c_struct.leds as *const RawColor, self.c_struct.count as usize);
         }
     }
 
@@ -35,43 +33,9 @@ impl Channel {
     ///
     /// This function is like moderately unsafe.  This assumes that
     /// the C library actually holds to its memory layout.
-    pub fn leds_mut() -> &mut [RawColor] {
+    pub fn leds_mut(&mut self) -> &mut [RawColor] {
         unsafe {
-            return from_raw_parts_mut(c_struct.leds as *mut RawColor, c_struct.count as usize);
+            return from_raw_parts_mut(self.c_struct.leds as *mut RawColor, self.c_struct.count as usize);
         }
-    }
-
-    /// Render the colors to the string.
-    ///
-    /// It doesn't automatically do this because it
-    /// is a somewhat costly operation that should 
-    /// be batched.
-    pub fn render(&mut self) -> Result<()> {
-        unsafe {
-            return ws2811_render(self.c_struct).into();
-        }
-    }
-}
-
-
-impl<I> Index<I> for Channel
-where
-    I: std::slice::SliceIndex<RawColor>
-{
-    type Output = I::Output;
-
-    fn index(&self, index: I) -> &Self::Output {
-        Index::index(self.raw_leds, index)
-    }
-}
-
-impl IndexMut<usize> for Channel
-where
-    I: std::slice::SliceIndex<RawColor>
-{
-    type Output = I::Output;
-
-    fn index(&mut self, index: I) -> &mut Self::Output {
-        IndexMut::index_mut(self.raw_leds, index)
     }
 }

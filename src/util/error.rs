@@ -1,4 +1,5 @@
 use std::{error, fmt, result};
+use super::super::bindings::{ws2811_return_t};
 
 #[derive(Clone, Debug)]
 pub enum WS2811Error {
@@ -12,7 +13,7 @@ pub enum WS2811Error {
     PwmSetup,
     MailboxDevice,
     Dma,
-    IllegalGpio
+    IllegalGpio,
     PcmSetup,
     SpiSetup,
     SpiTransfer,
@@ -35,7 +36,8 @@ impl fmt::Display for WS2811Error {
             WS2811Error::PcmSetup => "PCM setup error",
             WS2811Error::SpiSetup => "SPI setup error",
             WS2811Error::SpiTransfer => "SPI transfer error",
-        }
+        };
+        write!(f, "{}", message);
     }
 }
 
@@ -43,7 +45,7 @@ impl error::Error for WS2811Error {
     fn description(&self) -> &str {
         return format!("{}", self).as_str();
     }
-    fn cause(&self) -> Option<&Error> {
+    fn cause(&self) -> Option<&error::Error> {
         return None;
     }
 }

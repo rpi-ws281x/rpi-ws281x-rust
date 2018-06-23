@@ -1,16 +1,17 @@
-use std::{mem, ptr};
+use std::{mem};
 
 use libc::c_int;
 
-use super::Channel;
 use super::super::bindings;
+use super::super::util::{StripType};
+
 
 pub struct ChannelBuilder(bindings::ws2811_channel_t);
 
 impl ChannelBuilder {
     pub fn new() -> Self {
         unsafe {
-            Builder(mem::zeroed())
+            ChannelBuilder(mem::zeroed())
         }
     }
     pub fn pin(&mut self, value: i32) -> &mut Self {
@@ -21,7 +22,7 @@ impl ChannelBuilder {
         self.0.count = value as c_int;
         self
     }
-    pub fn type(&mut self, value: StripType) -> &mut Self {
+    pub fn strip_type(&mut self, value: StripType) -> &mut Self {
         self.0.strip_type = value.into();
         self
     }
