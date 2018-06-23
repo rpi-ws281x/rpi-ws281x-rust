@@ -1,4 +1,4 @@
-mod channel;
 mod builder;
-pub use self::channel::Channel;
+mod channel;
 pub use self::builder::ChannelBuilder;
+pub use self::channel::Channel;

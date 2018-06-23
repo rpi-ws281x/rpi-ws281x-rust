@@ -1,4 +1,4 @@
-mod controller;
 mod builder;
-pub use self::controller::Controller;
+mod controller;
 pub use self::builder::ControllerBuilder;
+pub use self::controller::Controller;

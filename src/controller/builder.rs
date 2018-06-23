@@ -1,14 +1,14 @@
 use std::{mem, ptr};
 
-use libc::{c_int};
+use libc::c_int;
 
-use super::super::bindings::{ws2811_t, ws2811_init};
-use super::super::channel::{ChannelBuilder};
-use super::super::util::{Result};
+use super::super::bindings::{ws2811_init, ws2811_t};
+use super::super::channel::ChannelBuilder;
+use super::super::util::Result;
 
-use super::controller::{Controller};
+use super::controller::Controller;
 
-pub struct ControllerBuilder(ws2811_t);
+pub struct ControllerBuilder(pub ws2811_t);
 
 impl ControllerBuilder {
     pub fn new() -> Self {
@@ -34,8 +34,12 @@ impl ControllerBuilder {
     }
     pub fn build(&mut self) -> Result<Controller> {
         unsafe {
-            ws2811_init(&mut self.0).into::<Result<()>>()?;
-            return Ok(Controller::new(ptr::read(self.0)));
+            let res: Result<()> = ws2811_init(&mut self.0).into();
+            match res {
+                Ok(_) => {}
+                Err(e) => return Err(e),
+            }
+            return Ok(Controller::new(ptr::read(&mut self.0)));
         }
     }
 }
