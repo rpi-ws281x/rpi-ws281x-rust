@@ -1,5 +1,5 @@
+use super::super::bindings::ws2811_return_t;
 use std::{error, fmt, result};
-use super::super::bindings::{ws2811_return_t};
 
 #[derive(Clone, Debug)]
 pub enum WS2811Error {
@@ -37,13 +37,28 @@ impl fmt::Display for WS2811Error {
             WS2811Error::SpiSetup => "SPI setup error",
             WS2811Error::SpiTransfer => "SPI transfer error",
         };
-        write!(f, "{}", message);
+        write!(f, "{}", message)
     }
 }
 
 impl error::Error for WS2811Error {
     fn description(&self) -> &str {
-        return format!("{}", self).as_str();
+        match *self {
+            WS2811Error::Generic => "Generic error",
+            WS2811Error::OutOfMemory => "Out of memory",
+            WS2811Error::HwNotSupported => "Hardware not supported",
+            WS2811Error::MemLock => "Memory lock",
+            WS2811Error::Mmap => "mmap error",
+            WS2811Error::MapRegisters => "Map registers error",
+            WS2811Error::GpioInit => "GPIO initialization error",
+            WS2811Error::PwmSetup => "PWM setup error",
+            WS2811Error::MailboxDevice => "Mailbox device error",
+            WS2811Error::Dma => "DMA error",
+            WS2811Error::IllegalGpio => "Illegal GPIO error",
+            WS2811Error::PcmSetup => "PCM setup error",
+            WS2811Error::SpiSetup => "SPI setup error",
+            WS2811Error::SpiTransfer => "SPI transfer error",
+        }
     }
     fn cause(&self) -> Option<&error::Error> {
         return None;
@@ -73,4 +88,3 @@ impl From<ws2811_return_t> for Result<()> {
         }
     }
 }
-

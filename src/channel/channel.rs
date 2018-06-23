@@ -1,7 +1,7 @@
 use std::slice::{from_raw_parts, from_raw_parts_mut};
 
-use super::super::util::{RawColor};
-use super::super::bindings::{ws2811_channel_t};
+use super::super::bindings::ws2811_channel_t;
+use super::super::util::RawColor;
 
 #[derive(Debug)]
 pub struct Channel<'a> {
@@ -11,9 +11,7 @@ pub struct Channel<'a> {
 impl<'a> Channel<'a> {
     /// Build a channel from the C struct.
     pub fn new(c_struct: &'a mut ws2811_channel_t) -> Channel<'a> {
-        Channel {
-            c_struct,
-        }
+        Channel { c_struct }
     }
 
     /// Gets an immutable reference to the colors currently
@@ -25,7 +23,10 @@ impl<'a> Channel<'a> {
     /// a total given.
     pub fn leds(&self) -> &[RawColor] {
         unsafe {
-            return from_raw_parts(self.c_struct.leds as *const RawColor, self.c_struct.count as usize);
+            return from_raw_parts(
+                self.c_struct.leds as *const RawColor,
+                self.c_struct.count as usize,
+            );
         }
     }
 
@@ -35,7 +36,10 @@ impl<'a> Channel<'a> {
     /// the C library actually holds to its memory layout.
     pub fn leds_mut(&mut self) -> &mut [RawColor] {
         unsafe {
-            return from_raw_parts_mut(self.c_struct.leds as *mut RawColor, self.c_struct.count as usize);
+            return from_raw_parts_mut(
+                self.c_struct.leds as *mut RawColor,
+                self.c_struct.count as usize,
+            );
         }
     }
 }

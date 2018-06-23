@@ -1,18 +1,15 @@
-use std::{mem};
+use std::mem;
 
-use libc::c_int;
+use libc::{c_int, c_uint};
 
 use super::super::bindings;
-use super::super::util::{StripType};
+use super::super::util::StripType;
 
-
-pub struct ChannelBuilder(bindings::ws2811_channel_t);
+pub struct ChannelBuilder(pub bindings::ws2811_channel_t);
 
 impl ChannelBuilder {
     pub fn new() -> Self {
-        unsafe {
-            ChannelBuilder(mem::zeroed())
-        }
+        unsafe { ChannelBuilder(mem::zeroed()) }
     }
     pub fn pin(&mut self, value: i32) -> &mut Self {
         self.0.gpionum = value as c_int;
@@ -23,7 +20,8 @@ impl ChannelBuilder {
         self
     }
     pub fn strip_type(&mut self, value: StripType) -> &mut Self {
-        self.0.strip_type = value.into();
+        let tmp: c_uint = value.into();
+        self.0.strip_type = tmp as i32;
         self
     }
     pub fn invert(&mut self, value: bool) -> &mut Self {
