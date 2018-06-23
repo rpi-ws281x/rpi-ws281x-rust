@@ -7,6 +7,7 @@ use super::super::util::StripType;
 
 /// A struct used to build a channel configuration for
 /// a ControllerBuilder.
+#[derive(Debug)]
 pub struct ChannelBuilder(pub bindings::ws2811_channel_t);
 
 impl ChannelBuilder {

@@ -1,7 +1,7 @@
 use super::super::bindings::ws2811_return_t;
 use std::{error, fmt, result};
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Copy, Debug)]
 pub enum WS2811Error {
     Generic,
     OutOfMemory,

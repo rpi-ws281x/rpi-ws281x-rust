@@ -5,7 +5,7 @@ use super::super::bindings::{
 };
 use libc::c_uint;
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 pub enum StripType {
     Sk6812Rgbw,
     Sk6812Rbgw,
