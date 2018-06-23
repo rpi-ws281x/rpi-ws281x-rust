@@ -3,6 +3,9 @@ use std::slice::{from_raw_parts, from_raw_parts_mut};
 use super::super::bindings::{ws2811_fini, ws2811_render, ws2811_t};
 use super::super::util::{Result, RawColor};
 
+/// The main struct used to control lights.  Provides ways of
+/// accessing the light color values and rendering those values to
+/// the string.
 #[derive(Clone, Debug)]
 pub struct Controller {
     c_struct: ws2811_t,
