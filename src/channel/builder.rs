@@ -1,45 +1,90 @@
-use std::{ptr, slice, mem};
+use std::mem;
+
+use bindings::ws2811_channel_t;
+
 use channel::Channel;
-pub struct Builder(Channel);
+use util::strip::Strip;
+
+/// Builds a Channel.
+///
+/// ```
+/// let channel = channel::builder::Builder::default()
+///     .gpio_pin(18)
+///     .led_count(100)
+///     .strip_type(Strip::WS2811_STRIP_RGB)
+///     .brightness(128)
+///     .build();
+/// ```
+pub struct Builder {
+    /// the GPIO pin on the Pi to send data from
+    /// (Note: not the physical hardware pin number, not
+    /// the WiringPi number, but the GPIO number).
+    /// defaults to 18 (which has PWM)
+    gpio_num: i32,
+    /// The number of LEDs in the strand (or in series)
+    led_count: i32,
+    /// Invert the output signal; defaults to false.
+    invert: bool,
+    /// Set the type of LED Strip; defaults to Strip::WS2811_STRIP_RGB
+    strip_type: Strip,
+    /// the initial brightness level of the LEDs; defaults to 255
+    brightness: u8,
+}
+
+impl Default for Builder {
+    fn default() -> Self {
+        Builder {
+            gpio_num: 18,
+            led_count: 0,
+            invert: false,
+            strip_type: Strip::WS2811_STRIP_RGB,
+            brightness: 255,
+        }
+    }
+}
 
 impl Builder {
-    pub fn new() -> Self {
+    /// set the gpio pin to use; defaults to 18 (must have PWM support)
+    pub fn gpio_num(&mut self, val: i32) -> &mut Self {
+        self.gpio_num = val;
+        self
+    }
+
+    /// set the number of LEDs in the strand
+    pub fn led_count(&mut self, val: i32) -> &mut Self {
+        self.led_count = val;
+        self
+    }
+
+    /// invert the signal? defaults to false
+    pub fn invert(&mut self, val: bool) -> &mut Self {
+        self.invert = val;
+        self
+    }
+
+    /// sets the strip type; defaults to Strip::WS2811_STRIP_RGB
+    pub fn strip_type(&mut self, val: Strip) -> &mut Self {
+        self.strip_type = val;
+        self
+    }
+
+    /// set the initial brightness of the LEDs; defaults to 255
+    pub fn brightness(&mut self, val: u8) -> &mut Self {
+        self.brightness = val;
+        self
+    }
+
+    /// build the configured Channel
+    pub fn build(&self) -> Channel {
+        let invert: i32 = self.invert.into();
         unsafe {
-            let mut channel: Channel = mem::zeroed();
-            channel.gpio_pin = &channel.c_struct.gpionum;
-            channel.led_count = &channel.c_struct.count;
-            channel.invert = &channel.c_struct.invert;
-            channel.brightness = &channel.c_struct.brightness;
-            return Builder(channel);
-        }
-    }
-    fn pin(&mut self, val: i32) -> Self {
-        self.0.c_struct.gpionum = val;
-        return self;
-    }
-    fn led_count(&mut self, val: i32) -> Self {
-        self.0.c_struct.count = val;
-        return self;
-    }
-    fn invert(&mut self, val: bool) -> Self {
-        match val {
-            true => {
-                self.0.c_struct.invert = 1_i32;
-                return self;
-            },
-            false => {
-                self.0.c_struct.invert = 0_i32;
-                return self;
-            }
-        }
-    }
-    fn brightness(&mut self, val: u8) -> Self {
-        self.0.c_struct.brightness = val;
-        return self;
-    }
-    fn build(&mut self) -> Result<Channel, ()>{
-        unsafe {
-            return Channel::new(ptr::read(&self.0))
+            let mut c_struct: ws2811_channel_t = mem::zeroed();
+            c_struct.gpionum = self.gpio_num;
+            c_struct.invert = invert;
+            c_struct.count = self.led_count;
+            c_struct.strip_type = self.strip_type.into();
+            c_struct.brightness = self.brightness;
+            Channel::new(c_struct)
         }
     }
 }
