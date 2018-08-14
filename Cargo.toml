@@ -6,13 +6,13 @@ license = "MIT"
 description = "Wrapper for ws281x library using bindgen to track upstream"
 
 [build]
-target = "armv7-unknown-linux-gnueabihf"
+target = "arm-unknown-linux-gnueabihf"
 
 [dependencies]
 
 [build-dependencies]
-bindgen = "0.26"
-gcc = "0.3"
+bindgen = "0.37"
+cc = "1.0"
 
 [profile.release]
 opt-level = 3
