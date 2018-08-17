@@ -1,45 +1,75 @@
-use std::{ptr, slice, mem};
-use channel::Channel;
-pub struct Builder(Channel);
+use std::mem;
+use std::os::raw::{c_int, c_uint};
 
-impl Builder {
+use super::super::bindings;
+use super::super::util::StripType;
+
+/// A struct used to build a channel configuration for
+/// a ControllerBuilder.
+#[derive(Debug)]
+pub struct ChannelBuilder(pub bindings::ws2811_channel_t);
+
+impl ChannelBuilder {
+    /// Creates a new ChannelBuilder
     pub fn new() -> Self {
-        unsafe {
-            let mut channel: Channel = mem::zeroed();
-            channel.gpio_pin = &channel.c_struct.gpionum;
-            channel.led_count = &channel.c_struct.count;
-            channel.invert = &channel.c_struct.invert;
-            channel.brightness = &channel.c_struct.brightness;
-            return Builder(channel);
+        unsafe { ChannelBuilder(mem::zeroed()) }
+    }
+    /// Sets the GPIO pin used by this channel
+    pub fn pin(&mut self, value: i32) -> &mut Self {
+        self.0.gpionum = value as c_int;
+        self
+    }
+    /// Sets the number of LEDs attached to this channel
+    pub fn count(&mut self, value: i32) -> &mut Self {
+        self.0.count = value as c_int;
+        self
+    }
+    /// Sets the strip type of this channel
+    pub fn strip_type(&mut self, value: StripType) -> &mut Self {
+        let tmp: c_uint = value.into();
+        self.0.strip_type = tmp as i32;
+        self
+    }
+    /// Sets the invert flag on the channel
+    pub fn invert(&mut self, value: bool) -> &mut Self {
+        if value {
+            self.0.invert = 1 as c_int;
+        } else {
+            self.0.invert = 0 as c_int;
         }
+        self
     }
-    fn pin(&mut self, val: i32) -> Self {
-        self.0.c_struct.gpionum = val;
-        return self;
+    /// Sets the brightness of this channel
+    pub fn brightness(&mut self, value: u8) -> &mut Self {
+        self.0.brightness = value;
+        self
     }
-    fn led_count(&mut self, val: i32) -> Self {
-        self.0.c_struct.count = val;
-        return self;
+    /// Sets the white shift of this channel
+    pub fn wshift(&mut self, value: u8) -> &mut Self {
+        self.0.wshift = value;
+        self
     }
-    fn invert(&mut self, val: bool) -> Self {
-        match val {
-            true => {
-                self.0.c_struct.invert = 1_i32;
-                return self;
-            },
-            false => {
-                self.0.c_struct.invert = 0_i32;
-                return self;
-            }
-        }
+    /// Sets the red shift of this channel
+    pub fn rshift(&mut self, value: u8) -> &mut Self {
+        self.0.rshift = value;
+        self
     }
-    fn brightness(&mut self, val: u8) -> Self {
-        self.0.c_struct.brightness = val;
-        return self;
+    /// Sets the green shift of this channel
+    pub fn gshift(&mut self, value: u8) -> &mut Self {
+        self.0.gshift = value;
+        self
     }
-    fn build(&mut self) -> Result<Channel, ()>{
-        unsafe {
-            return Channel::new(ptr::read(&self.0))
-        }
+    /// Sets the blue shift of this channel
+    pub fn bshift(&mut self, value: u8) -> &mut Self {
+        self.0.bshift = value;
+        self
+    }
+    /// Return the built channel.
+    pub fn build(&mut self) -> bindings::ws2811_channel_t {
+        // all of the pointers will be initialized as a part of
+        // ws2811_init() in the controller builder, so clone
+        // here so that this builder can have .build() called
+        // multiple times.
+        self.0.clone()
     }
 }
