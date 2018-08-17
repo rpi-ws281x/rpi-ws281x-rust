@@ -37,7 +37,7 @@ impl Controller {
     /// This function is moderately unsafe because we rely on the promise
     /// from the C library that it will stick to its memory layout and that
     /// the pointer is valid.
-    pub fn leds(&mut self, channel: usize) -> &[RawColor] {
+    pub fn leds(&self, channel: usize) -> &[RawColor] {
         /*
          * Using unsafe here because we want to construct a slice
          * from just the raw pointer and the supposed number of elements
