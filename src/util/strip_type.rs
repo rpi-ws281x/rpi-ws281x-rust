@@ -6,7 +6,7 @@ use super::super::bindings::{
     WS2811_STRIP_GBR, WS2811_STRIP_GRB, WS2811_STRIP_RBG, WS2811_STRIP_RGB, WS2812_STRIP,
 };
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub enum StripType {
     Sk6812Rgbw,
     Sk6812Rbgw,
