@@ -1,6 +1,6 @@
 [package]
 name = "rs_ws281x"
-version = "0.2.2"
+version = "0.2.3"
 authors = ["Joseph Murphy <air.jmurph@gmail.com>"]
 license = "MIT"
 description = "Wrapper for ws281x library using bindgen to track upstream"
