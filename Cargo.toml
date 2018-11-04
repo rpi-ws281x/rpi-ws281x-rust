@@ -4,6 +4,7 @@ version = "0.2.3"
 authors = ["Joseph Murphy <air.jmurph@gmail.com>"]
 license = "MIT"
 description = "Wrapper for ws281x library using bindgen to track upstream"
+repository = "https://github.com/rpi-ws281x/rpi-ws281x-rust"
 
 [dependencies]
 serde = "1.0"
