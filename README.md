@@ -19,6 +19,11 @@ that, feel free to open an issue, talk about proposed changes, then open
 a PR!  I would love a helping hand, just have to make sure things don't
 get too messy either.
 
+## Compiling on Raspbian
+- Install Rust from https://rustup.rs/ 
+- Run `rustup target add arm-unknown-linux-gnueabihf`
+- Install `sudo apt install libclang-dev`
+
 ## Cross-compiling on Windows
 
 - Make sure Git is installed. This is used to clone the latest rpi-ws2811 lib.
