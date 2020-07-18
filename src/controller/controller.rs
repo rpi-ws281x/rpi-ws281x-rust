@@ -1,7 +1,7 @@
 use std::slice::{from_raw_parts, from_raw_parts_mut};
 
-use super::super::bindings::{ws2811_fini, ws2811_render, ws2811_t};
-use super::super::util::{Result, RawColor};
+use super::super::bindings::{ws2811_fini, ws2811_render, ws2811_t, ws2811_wait};
+use super::super::util::{RawColor, Result};
 
 /// The main struct used to control lights.  Provides ways of
 /// accessing the light color values and rendering those values to
@@ -30,14 +30,21 @@ impl Controller {
         }
     }
 
+    /// Wait for a render to be completed.
+    pub fn wait(&mut self) -> Result<()> {
+        unsafe {
+            return ws2811_wait(&mut self.c_struct).into();
+        }
+    }
+
     /// Gets the channels with non-zero number of LED's associated with them.
-    /// 
+    ///
     /// I know this is somewhat non-intuitive, but naming it something like
     /// `active_channels(&self)` seemed overly verbose.
     pub fn channels(&self) -> Vec<usize> {
-        (0..self.c_struct.channel.len()).filter(|x: _ | {
-            self.c_struct.channel[x.clone()].count > 0
-        }).collect::<Vec<_>>()
+        (0..self.c_struct.channel.len())
+            .filter(|x: _| self.c_struct.channel[x.clone()].count > 0)
+            .collect::<Vec<_>>()
     }
 
     /// Gets a slice view to the color array to be written to the LEDs.
@@ -57,7 +64,7 @@ impl Controller {
         unsafe {
             from_raw_parts(
                 self.c_struct.channel[channel].leds as *const RawColor,
-                self.c_struct.channel[channel].count as usize
+                self.c_struct.channel[channel].count as usize,
             )
         }
     }
@@ -79,7 +86,7 @@ impl Controller {
         unsafe {
             from_raw_parts_mut(
                 self.c_struct.channel[channel].leds as *mut RawColor,
-                self.c_struct.channel[channel].count as usize
+                self.c_struct.channel[channel].count as usize,
             )
         }
     }
