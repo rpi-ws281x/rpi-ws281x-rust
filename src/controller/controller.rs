@@ -47,6 +47,16 @@ impl Controller {
             .collect::<Vec<_>>()
     }
 
+    /// Gets the brightness of the LEDs
+    pub fn brightness(&self, channel: usize) -> u8 {
+        self.c_struct.channel[channel].brightness
+    }
+
+    /// Sets the brighness of the LEDs
+    pub fn set_brightness(&mut self, channel: usize, value: u8) {
+        self.c_struct.channel[channel].brightness = value;
+    }
+
     /// Gets a slice view to the color array to be written to the LEDs.
     /// See `leds_mut` for a mutable slice view to this data.
     ///
