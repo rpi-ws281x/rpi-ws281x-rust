@@ -1,3 +1,5 @@
+[![crates.io](http://meritbadge.herokuapp.com/rs_ws281x)](https://crates.io/crates/rs_ws281x)
+[![docs.rs](https://docs.rs/rs_ws281x/badge.svg)](https://docs.rs/rs_ws281x)
 # Welcome to the Rust Bindings for rpi_ws281x
 This project is going through major overhauls, so expect breaking
 changes on most version changes.
