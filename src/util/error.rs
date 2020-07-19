@@ -60,7 +60,7 @@ impl error::Error for WS2811Error {
             WS2811Error::SpiTransfer => "SPI transfer error",
         }
     }
-    fn cause(&self) -> Option<&error::Error> {
+    fn cause(&self) -> Option<&dyn error::Error> {
         return None;
     }
 }
