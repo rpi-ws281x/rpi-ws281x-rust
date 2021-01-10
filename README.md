@@ -26,6 +26,18 @@ get too messy either.
 - Run `rustup target add arm-unknown-linux-gnueabihf`
 - Install `sudo apt install libclang-dev`
 
+## Cross-compiling on Ubuntu/Debian
+- Install Rust from https://rustup.rs/ 
+- Run `rustup target add arm-unknown-linux-gnueabihf`
+- Install `sudo apt install libclang-dev gcc-arm-linux-gnueabihf`
+
+### AArch64 Builds
+- Run `rustup target add aarch64-unknown-linux-gnu`
+- Install cross-compiler toolchain:
+`sudo apt install libclang-dev gcc-aarch64-linux-gnu`
+- Build with: `cargo build --target=aarch64-unknown-linux-gnu [YOUR OPTIONS]`
+
+
 ## Cross-compiling on Windows
 
 - Make sure Git is installed. This is used to clone the latest rpi-ws2811 lib.
