@@ -7,6 +7,6 @@ mod channel;
 mod controller;
 mod util;
 
-pub use channel::ChannelBuilder;
+pub use channel::{ChannelBuilder};
 pub use controller::{Controller, ControllerBuilder};
-pub use util::{RawColor, Result, StripType, WS2811Error};
+pub use util::{StripType, RawColor};
