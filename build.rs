@@ -17,7 +17,7 @@ fn main() {
         .arg("--recursive")
         .arg("--remote")
         .output()
-        .expect("Failed to execute hostname command.");
+        .expect("Failed to execute git command.");
 
     // build a static lib
     cc::Build::new()
