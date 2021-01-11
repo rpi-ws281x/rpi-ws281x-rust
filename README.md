@@ -1,18 +1,24 @@
 [![crates.io](http://meritbadge.herokuapp.com/rs_ws281x)](https://crates.io/crates/rs_ws281x)
 [![docs.rs](https://docs.rs/rs_ws281x/badge.svg)](https://docs.rs/rs_ws281x)
 # Welcome to the Rust Bindings for rpi_ws281x
-This project is going through major overhauls, so expect breaking
-changes on most version changes.
 
-## API Design - Help Wanted
-Please take a look at the `feature-new-api` branch and issue #1 and give
-some feedback!
+## PSA - Higher Level Abstraction
+If you are looking at this crate and thinking "boy, I'd like to add {insert higher abstraction}"
+then you may be interested in one of the below projects. This project is meant to stick strictly
+to the driver's feature set (and possibly a subset of that even).
 
-## Usage
-Currently in major flux, more details when I finish the "Stage 1" overhaul.
-The current version on crates.io is pretty close to a bare bindgen wrap of
-the C library.  The next version will look a lot more like typical Rust,
-inspired by the efforts of @Meh who wrote manual bindings to this libray
+- [Candela: A networked LED control protocol](https://github.com/JMurph2015/candela)
+
+> _Remember to audit your dependencies, we take no responsibility for any security vulnerabilities
+resulting from the use of the above mentioned crates_
+
+If you have a crate that builds on this one and want it featured here, feel free to open a PR.
+
+
+## Usage Warning
+This project is still a work-in-progress, and the API is very much subject to change.
+Most of the major stuff is covered by fairly idiomatic Rust.  However, we are always
+striving to cover more to the level of @Meh who wrote manual bindings to this libray
 a while back.
 
 ## Contributing
