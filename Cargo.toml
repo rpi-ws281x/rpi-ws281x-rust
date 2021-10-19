@@ -11,7 +11,7 @@ serde = "1.0"
 serde_derive = "1.0"
 
 [build-dependencies]
-bindgen = { version = "*", default-features = false }
+bindgen = { version = "0.59.1", default-features = false }
 cc = "1.0"
 
 [profile.release]
