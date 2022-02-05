@@ -31,11 +31,25 @@ get too messy either.
 - Install Rust from https://rustup.rs/ 
 - Run `rustup target add arm-unknown-linux-gnueabihf`
 - Install `sudo apt install libclang-dev`
+- Build with `cargo build`
 
 ## Cross-compiling on Ubuntu/Debian
 - Install Rust from https://rustup.rs/ 
 - Run `rustup target add arm-unknown-linux-gnueabihf`
 - Install `sudo apt install libclang-dev gcc-arm-linux-gnueabihf`
+- Create the directory `.cargo` in the root of your Rust project and create a local cargo configuration file `config.toml` in it.
+- Paste the following lines into `config.toml` to always build for the `arm-unknown-linux-gnueabihf` target, to use the GCC linker for this architecture and to set the sysroot so that the linker can find the necessary header files:
+```
+[build]
+target = "arm-unknown-linux-gnueabihf"
+
+[target.arm-unknown-linux-gnueabihf]
+linker = "arm-linux-gnueabihf-gcc"
+
+[env]
+RPI_WS281X_SYSROOT = "/usr/arm-linux-gnueabihf"
+```
+- Build with `cargo build`
 
 ### AArch64 Builds
 - Run `rustup target add aarch64-unknown-linux-gnu`
