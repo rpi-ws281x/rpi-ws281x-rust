@@ -1,4 +1,7 @@
+use rs_ws281x::ChannelBuilder;
+
 use rs_ws281x::ControllerBuilder;
+use rs_ws281x::StripType;
 
 fn main() {
     // Construct a single channel controller. Note that the
