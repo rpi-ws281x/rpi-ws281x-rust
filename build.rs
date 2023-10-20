@@ -1,4 +1,3 @@
-extern crate bindgen;
 extern crate cc;
 
 use std::env;
@@ -34,39 +33,4 @@ fn main() {
 
     // link to the created static lib
     println!("cargo:rustc-link-lib=static=ws2811");
-
-    // this environment variable is declared by rustc/cargo
-    // and is guaranteed to exist.
-    let target = env::var("TARGET").unwrap();
-    // The bindgen::Builder is the main entry point
-    // to bindgen, and lets you build up options for
-    // the resulting bindings.
-    let mut builder = bindgen::Builder::default()
-        // The input header we would like to generate
-        // bindings for.
-        .header("src/wrapper.h")
-        // generate an rust enum for the return type of ws2811_init (instead of the
-        // the default of creating module-level consts).
-        .rustified_enum("ws2811_return_t")
-        .clang_arg("-target")
-        .clang_arg(target);
-
-    // Specifying the -target above seems to be sufficient for clang, but
-    // just in case, allow for the user to override the toolset sysroot.
-    // Note: this should be the path to the GCC ARM sysroot, *not* the libclang
-    // sysroot!
-    if let Ok(sysroot) = env::var("RPI_WS281X_SYSROOT") {
-        builder = builder.clang_arg(format!("--sysroot={}", sysroot));
-    }
-
-    let bindings = builder
-        // Finish the builder and generate the bindings.
-        .generate()
-        // Unwrap the Result and panic on failure.
-        .expect("Unable to generate bindings");
-
-    // Write the bindings to the $OUT_DIR/bindings.rs file.
-    bindings
-        .write_to_file(out_path.join("bindings.rs"))
-        .expect("Couldn't write bindings!");
 }
