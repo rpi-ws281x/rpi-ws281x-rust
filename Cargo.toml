@@ -1,10 +1,11 @@
 [package]
 name = "rs_ws281x"
-version = "0.4.4"
+version = "0.5.0"
 authors = ["Joseph Murphy <air.jmurph@gmail.com>"]
 license = "MIT"
 description = "Wrapper for ws281x library using bindgen to track upstream"
 repository = "https://github.com/rpi-ws281x/rpi-ws281x-rust"
+edition = "2018"
 
 [dependencies]
 serde = "1.0"
