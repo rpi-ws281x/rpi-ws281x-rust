@@ -1,6 +1,6 @@
 [package]
 name = "rs_ws281x"
-version = "0.5.0"
+version = "0.5.1"
 authors = ["Joseph Murphy <air.jmurph@gmail.com>"]
 license = "MIT"
 description = "Wrapper for ws281x library using bindgen to track upstream"
@@ -12,7 +12,7 @@ serde = "1.0"
 serde_derive = "1.0"
 
 [build-dependencies]
-bindgen = { version = "0.60", default-features = false }
+bindgen = { version = "0.69", default-features = false }
 cc = "1.0"
 
 [profile.release]
