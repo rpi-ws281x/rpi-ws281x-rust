@@ -11,6 +11,16 @@ pub struct Controller {
     c_struct: ws2811_t,
 }
 
+/// It is safe to implement `Send` because `Controller` is the sole
+/// owner of its internal `ws2811_t` object and the pointers it
+/// contains, and those pointers are never exposed by this module's
+/// API. Therefore, there is no risk of pointer aliasing.
+unsafe impl Send for Controller {}
+
+/// It is safe to implement `Sync` because the underlying `ws2811_t`
+/// struct does not make use of any interior mutability.
+unsafe impl Sync for Controller {}
+
 impl Controller {
     /// Creates a new Controller
     ///
